@@ -33,6 +33,7 @@ const studentSchema = new mongoose.Schema(
   }
 );
 
+//Automatically run and hash the password
 studentSchema.pre("save", async function (next) {
   this.id = this._id;
 
@@ -65,3 +66,9 @@ studentSchema.methods.createPassword = function () {
 const studentModel = mongoose.model("Student", studentSchema);
 
 module.exports = studentModel;
+
+// register -> create -> email -> pre middleware -> hash -> database
+
+// login -> user(password),database(passoword)->compare->true/false;
+
+// login -> accesstoken,refreshtoken, loginIn

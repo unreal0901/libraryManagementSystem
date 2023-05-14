@@ -26,7 +26,7 @@ class Email {
   }
 
   async send(template, subject) {
-    console.log("inside");
+    // console.log("inside");
 
     const loc = path.join(__dirname, "../views", `${template}.pug`);
     const html = pug.renderFile(loc, {

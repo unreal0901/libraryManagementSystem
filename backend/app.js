@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./utils/connectDB");
 const userRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
+const bookRouter = require("./routes/book.route");
 const app = express();
 
 // middleware
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 // 5. Routes
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/book", bookRouter);
 
 // Testing
 app.get("/api/healthChecker", (req, res, next) => {
