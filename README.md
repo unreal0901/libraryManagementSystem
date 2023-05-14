@@ -1,13 +1,19 @@
-# libraryManagementSystem
+﻿# Library Management System
 
-Basic library Management System
+It's a basic library management system which is being developed , and is at early stage of development.
 
-Requirements:
+# Flow
 
-1. Only admin will be able to add students and books
-2. Password will be auto generated when a student is added by admin and that password will be sent to student email that admin entered.
-3. student will be able to login by using that password and their legal college email
-4. on login access token , refresh token and a session is created in redis cache
-5. First download the docker and run command docker-compose up -d from the root which will spin the mongo and redis images
-6. access token will expire in 15 min , after which refresh token is used to generate new access token.
-7. As jwt are stateless we are using session to terminate the user session on logout , by this even if tokens get compromised still no access will be granted as session will be terminated , session and refresh token have same expiration time.
+- It has 2 users for now , student and admin, admin will have all privileges such as adding student , removing student , adding books , removing books and all.
+- Student will not be able to register themselves manually, admin will add/register student by proving an official email and student details and on that email auto generated password is sent and that password is also hashed and saved in database.
+- Student can login into their account by sent password and will be able to access all the functionality a user of type student have , like issuing books but not adding books.
+
+# Authentication Flow:
+
+- Admin is already set in the database by us for now, admin can login into the account and add user.
+- On login an access token and refresh token is generated which are JWT made using {sub:userId} as payload and private accesstoken key which is stored in .env file.
+- After generating access token. a session is also created in redis which is blazingly fast session store, it stores session with key user.id.
+- Access token, refresh token and a login flag is sent as httpOnly cookie to front end.
+- Whenever someone try to access the protected routes then they have to send the accesstoken in header(Bearer format) or they have to send it inside cookie by credentials:true property.
+- If client have valid access token then we can verify it with public key and get the payload and payload have user.Id as sub so we can use it to get our session from redis too.
+- If client have valid access token and session then only he will be allowed to access the protected route else not.
