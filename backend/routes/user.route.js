@@ -1,9 +1,26 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const {
+  getAllUsersHandler,
+  getMeHandler,
+} = require("../controllers/user.controller");
+const { validate } = require("../middleware/validate");
+const { registerHandler } = require("../controllers/auth.contoller");
+const { createStudentSchema } = require("../schema/student.schema");
+const { deserializeUser } = require("../middleware/deserializeUser");
+const { requireUser } = require("../middleware/requireUser");
+const { restrictTo } = require("../middleware/restrictTo");
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const router = express.Router();
+
+router.use(deserializeUser, requireUser);
+
+// Admin Get Users route
+// router.get("/", restrictTo("admin"), getAllUsersHandler);
+
+// Get my info route
+// router.get("/me", getMeHandler);
+
+// Add student or admin
+router.post("/register", validate(createStudentSchema), registerHandler);
 
 module.exports = router;

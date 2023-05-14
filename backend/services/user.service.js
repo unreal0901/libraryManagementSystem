@@ -1,5 +1,5 @@
 const { omit } = require("lodash");
-const { FilterQuery, QueryOptions, UpdateQuery } = require("mongoose");
+// const { FilterQuery, QueryOptions, UpdateQuery } = require("mongoose");
 const config = require("config");
 const studentModel = require("../models/student.model");
 const { excludedFields } = require("../utils/excludedFields");

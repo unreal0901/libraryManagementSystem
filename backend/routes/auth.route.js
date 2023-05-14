@@ -13,8 +13,9 @@ const {
 
 const router = express.Router();
 
+// Register can be done only by admin and we input the admin credential inside the system
 // Register user route
-router.post("/register", validate(createStudentSchema), registerHandler);
+// router.post("/register", validate(createStudentSchema), registerHandler);
 
 // Login user route
 router.post("/login", validate(loginStudentSchema), loginHandler);

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const generator = require("generate-password");
-
+const Book = require("./book.model");
 const studentSchema = new mongoose.Schema(
   {
     fullName: { type: String },
@@ -9,6 +9,24 @@ const studentSchema = new mongoose.Schema(
     role: { type: String, default: "user" },
     photo: { type: String, default: "default.png" },
     password: { type: String },
+    issuedBooks: [
+      {
+        book: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Book",
+        },
+        issuedDate: { type: Date, default: Date.now },
+        returnDate: {
+          type: Date,
+          default: new Date(Date.now() + 16 * 24 * 60 * 60 * 1000), //16 days ahead of the issued date by default
+        },
+        status: {
+          type: String,
+          enum: ["issued", "returned"],
+          default: "issued",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
