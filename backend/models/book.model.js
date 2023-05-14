@@ -23,6 +23,7 @@ const bookSchema = new mongoose.Schema(
     isbn: {
       type: String,
       trim: true,
+      unique: true,
     },
     publishedDate: {
       type: Date,

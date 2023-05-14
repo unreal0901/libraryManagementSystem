@@ -1,8 +1,8 @@
 const express = require("express");
-const {
-  getAllUsersHandler,
-  getMeHandler,
-} = require("../controllers/user.controller");
+// const {
+//   getAllUsersHandler,
+//   getMeHandler,
+// } = require("../controllers/user.controller");
 const { validate } = require("../middleware/validate");
 const { registerHandler } = require("../controllers/auth.contoller");
 const { createStudentSchema } = require("../schema/student.schema");

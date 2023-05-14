@@ -8,6 +8,7 @@ const connectDB = require("./utils/connectDB");
 const userRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 const bookRouter = require("./routes/book.route");
+const studentRouter = require("./routes/student.route");
 const app = express();
 
 // middleware
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/book", bookRouter);
+app.use("/api/student", studentRouter);
 
 // Testing
 app.get("/api/healthChecker", (req, res, next) => {

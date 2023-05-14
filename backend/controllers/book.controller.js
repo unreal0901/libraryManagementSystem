@@ -3,7 +3,7 @@ const { getAllBooks, createBook } = require("../services/book.service");
 
 module.exports.createBookHandler = async (req, res, next) => {
   try {
-    console.log("inside controller");
+    // console.log("inside controller");
     const book = await createBook({
       title: req.body.title,
       author: req.body.author,
@@ -22,15 +22,20 @@ module.exports.createBookHandler = async (req, res, next) => {
       message: "Book Created",
       data: book,
     });
-  } catch (error) {
-    console.log(error);
-    next(new AppError(error));
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({
+        status: "fail",
+        message: "Book already exist, try to edit it.",
+      });
+    }
+    next(err);
   }
 };
 
 module.exports.getAllBookHandler = async (req, res, next) => {
   try {
-    const books = getAllBooks();
+    const books = await getAllBooks();
     res.status(200).json({ message: "All books fetched", data: books });
   } catch (error) {
     console.log(error);
