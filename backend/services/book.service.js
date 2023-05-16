@@ -17,4 +17,4 @@ const getAllBooks = async () => {
   return await Book.find();
 };
 
-module.exports = { getAllBooks, createBook };
+module.exports = { getAllBooks, createBook, findBook };

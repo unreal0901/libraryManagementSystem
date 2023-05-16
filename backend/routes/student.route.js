@@ -2,7 +2,10 @@ const express = require("express");
 const { deserializeUser } = require("../middleware/deserializeUser");
 const { requireUser } = require("../middleware/requireUser");
 
-const { issueHandler } = require("../controllers/student.controller");
+const {
+  issueHandler,
+  returnHandler,
+} = require("../controllers/student.controller");
 
 const router = express.Router();
 
@@ -10,5 +13,6 @@ const router = express.Router();
 router.use(deserializeUser, requireUser);
 
 router.post("/issue/:bookId", issueHandler);
+router.post("/return/:bookId", returnHandler);
 
 module.exports = router;
