@@ -1,4 +1,5 @@
 const AppError = require("../utils/appError");
+const BookInventory = require("../models/bookInventory.model");
 
 const { findBook, issueBook } = require("../services/student.service");
 
@@ -8,7 +9,10 @@ module.exports.issueHandler = async (req, res, next) => {
     const user = res.locals.user;
     const book = await findBook({ _id: bookId });
 
-    if (book.numBooksAvailable === 0) {
+    // Retrieve the BookInventory entry for the book's ISBN
+    const bookInventory = await BookInventory.findOne({ isbn: book.isbn });
+
+    if (!bookInventory || bookInventory.numBooksAvailable === 0) {
       return res.status(404).json({ message: "No available books to issue." });
     }
 

@@ -39,11 +39,6 @@ const bookSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    numBooksAvailable: {
-      type: Number,
-      required: [true, "A book must have the number of books available"],
-      min: 0,
-    },
   },
   {
     timestamps: true,

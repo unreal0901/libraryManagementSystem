@@ -4,18 +4,20 @@ const { getAllBooks, createBook } = require("../services/book.service");
 module.exports.createBookHandler = async (req, res, next) => {
   try {
     // console.log("inside controller");
-    const book = await createBook({
-      title: req.body.title,
-      author: req.body.author,
-      description: req.body.description,
-      image: req.body.image,
-      isbn: req.body.isbn,
-      publishedDate: new Date(req.body.publishedDate),
-      publisher: req.body.publisher,
-      pageCount: req.body.pageCount,
-      language: req.body.language,
-      numBooksAvailable: req.body.numBooksAvailable,
-    });
+    const book = await createBook(
+      {
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description,
+        image: req.body.image,
+        isbn: req.body.isbn,
+        publishedDate: new Date(req.body.publishedDate),
+        publisher: req.body.publisher,
+        pageCount: req.body.pageCount,
+        language: req.body.language,
+      },
+      req.body.numBooksAvailable
+    );
     book.save();
 
     res.status(201).json({

@@ -1,5 +1,6 @@
 const Book = require("../models/book.model");
 const Student = require("../models/student.model");
+const BookInventory = require("../models/bookInventory.model");
 
 const findBook = async (query, options = {}) => {
   return await Book.findOne(query, options);
@@ -11,7 +12,12 @@ const issueBook = async (user, bookToIssue) => {
   const newIssuedBook = { book: bookToIssue.id };
   student.issuedBooks.push(newIssuedBook);
   await student.save();
-  bookToIssue.numBooksAvailable -= 1;
+  const bookInventory = await BookInventory.findOne({ isbn: bookToIssue.isbn });
+  if (bookInventory) {
+    bookInventory.numBooksAvailable -= 1;
+    bookInventory.users.push(student.email);
+    await bookInventory.save();
+  }
   await bookToIssue.save();
 };
 

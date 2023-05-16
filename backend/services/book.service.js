@@ -1,7 +1,11 @@
 const Book = require("../models/book.model");
+const BookInventory = require("../models/bookInventory.model");
 
-const createBook = async (input) => {
-  console.log(input);
+const createBook = async (input, numBooks) => {
+  await BookInventory.create({
+    isbn: input.isbn,
+    numBooksAvailable: numBooks,
+  });
   return Book.create(input);
 };
 
