@@ -26,10 +26,9 @@ const returnBook = async (user, bookId, next) => {
     (issuedBook) => issuedBook.book.toString() === bookId
   );
 
-  if (issuedBookIndex !== -1) {
-    student.issuedBooks.splice(issuedBookIndex, 1);
-    await student.save();
-  } else return -1;
+  if (issuedBookIndex === -1) return -1;
+
+  const issuedBook = student.issuedBooks[issuedBookIndex];
 
   const bookToReturn = await findBook({ _id: bookId });
   const bookInventory = await BookInventory.findOne({
@@ -41,6 +40,28 @@ const returnBook = async (user, bookId, next) => {
     bookInventory.users.pull(user.email);
     await bookInventory.save();
   }
+
+  const fineRatePerDaY = 1;
+  const bookFine = student.calculateFineAmount(issuedBookIndex, fineRatePerDaY);
+
+  // Update totalFine field
+  student.totalFine += bookFine;
+
+  // Generate return date
+  const returnDate = new Date();
+
+  // Add book to booksUsed array with generated return date
+  student.booksUsed.push({
+    book: issuedBook.book,
+    issuedDate: issuedBook.issuedDate,
+    returnDate: returnDate,
+    fineAmount: bookFine,
+  });
+
+  // Remove the  book from issuedBooks array
+  student.issuedBooks.splice(issuedBookIndex, 1);
+  await student.save();
+  return student.totalFine;
 };
 
 module.exports = { findBook, issueBook, returnBook };

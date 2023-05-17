@@ -14,17 +14,26 @@ const studentSchema = new mongoose.Schema(
         book: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Book",
+          required: true,
         },
         issuedDate: { type: Date, default: Date.now },
         returnDate: {
           type: Date,
           default: new Date(Date.now() + 16 * 24 * 60 * 60 * 1000), //16 days ahead of the issued date by default
         },
-        status: {
-          type: String,
-          enum: ["issued", "returned"],
-          default: "issued",
+      },
+    ],
+    totalFine: { type: Number, default: 0 },
+    booksUsed: [
+      {
+        book: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Book",
+          required: true,
         },
+        issuedDate: { type: Date, required: true },
+        returnDate: { type: Date, required: true },
+        fineAmount: { type: Number, required: true },
       },
     ],
   },
@@ -61,6 +70,26 @@ studentSchema.methods.createPassword = function () {
   this.password = passwordVal;
 
   return passwordVal;
+};
+
+// Method to calculate fine based on the index of issuedBook and fineRate
+studentSchema.methods.calculateFineAmount = function (
+  bookIndex,
+  fineRatePerDay
+) {
+  const issuedBook = this.issuedBooks[bookIndex];
+  const currentDate = new Date().setHours(0, 0, 0, 0); // Set current date to midnight
+  const returnDate = new Date(issuedBook.returnDate).setHours(0, 0, 0, 0); // Set return date to midnight
+  const dayDifference = Math.ceil(
+    (currentDate - returnDate) / (24 * 60 * 60 * 1000)
+  );
+
+  if (dayDifference <= 0) {
+    return 0; // Book returned on or before the specified return date
+  }
+
+  const bookFine = dayDifference * fineRatePerDay;
+  return bookFine;
 };
 
 const studentModel = mongoose.model("Student", studentSchema);
