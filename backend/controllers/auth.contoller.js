@@ -4,11 +4,11 @@ const {
   findUser,
   findUserById,
   signToken,
-} = require("../services/user.service");
+} = require("../services/auth.service");
 const AppError = require("../utils/appError");
 const redisClient = require("../utils/connectRedis");
 const Email = require("../utils/email");
-const { signJwt, verifyJwt } = require("../utils/jwt");
+// const { signJwt, verifyJwt } = require("../utils/jwt");
 
 // Exclude this fields from the response
 // module.exports.excludedFields = ["password"];

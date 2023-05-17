@@ -1,65 +1,12 @@
-const { omit } = require("lodash");
-// const { FilterQuery, QueryOptions, UpdateQuery } = require("mongoose");
-const config = require("config");
+// const { omit } = require("lodash");
 const studentModel = require("../models/student.model");
 const { excludedFields } = require("../utils/excludedFields");
-const { signJwt } = require("../utils/jwt");
-const redisClient = require("../utils/connectRedis");
-// const { DocumentType } = require("@typegoose/typegoose");
-
-// CreateUser service
-const createUser = async (input) => {
-  return studentModel.create(input);
+const getMe = async (user) => {
+  return await studentModel.find({ _id: user._id }, { password: 0 }); 
 };
 
-console.log(excludedFields);
-
-// Find User by Id
-const findUserById = async (id) => {
-  const user = await studentModel.findById(id).lean();
-  return omit(user, excludedFields);
+const getAllUsers = async () => {
+  return await studentModel.find({}, { password: 0 });
 };
 
-// Find All users
-const findAllUsers = async () => {
-  return await studentModel.find();
-};
-
-// Find one user by any fields
-const findUser = async (query, options = {}) => {
-  return await studentModel.findOne(query, {}, options).select("+password");
-};
-
-const findAndUpdateUser = async (query, update, options) => {
-  return await studentModel.findOneAndUpdate(query, update, options);
-};
-
-// Sign Token
-const signToken = async (user) => {
-  // Sign the access token
-  const access_token = signJwt({ sub: user.id }, "accessTokenPrivateKey", {
-    expiresIn: `${config.get("accessTokenExpiresIn")}m`,
-  });
-  // Sign the refresh token
-  const refresh_token = signJwt({ sub: user.id }, "refreshTokenPrivateKey", {
-    expiresIn: `${config.get("refreshTokenExpiresIn")}m`,
-  });
-
-  console.log(access_token, refresh_token);
-  // Create a Session
-  redisClient.set(user.id, JSON.stringify(user), {
-    EX: 60 * 60,
-  });
-
-  // Return access token
-  return { access_token, refresh_token };
-};
-
-module.exports = {
-  createUser,
-  findUserById,
-  findAllUsers,
-  findUser,
-  findAndUpdateUser,
-  signToken,
-};
+module.exports = { getMe, getAllUsers };

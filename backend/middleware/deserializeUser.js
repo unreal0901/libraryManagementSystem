@@ -1,4 +1,4 @@
-const { findUserById } = require("../services/user.service");
+const { findUserById } = require("../services/auth.service");
 const AppError = require("../utils/appError");
 const redisClient = require("../utils/connectRedis");
 const { verifyJwt } = require("../utils/jwt");

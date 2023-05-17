@@ -23,8 +23,8 @@ router.post("/login", validate(loginStudentSchema), loginHandler);
 // This is deserialze middleware it checks for user have valid session and have appropriate tokens.
 router.use(deserializeUser, requireUser);
 
-
-
+// Add student or admin
+router.post("/register", validate(createStudentSchema), registerHandler);
 
 // Logout User
 // router.get("/logout", logoutHandler);
