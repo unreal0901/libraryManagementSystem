@@ -14,9 +14,14 @@ const bookInventorySchema = new mongoose.Schema(
       min: 0,
     },
     users: {
-      type: [String],
-      unique: true,
-      sparse: true,
+      type: [
+        {
+          type: String,
+          unique: true,
+          sparse: true,
+        },
+      ],
+      default: undefined,
     },
   },
   {

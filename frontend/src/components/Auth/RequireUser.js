@@ -1,35 +1,28 @@
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getUser } from "../../features/user/UserSlice";
 import { useGetMeQuery } from "../../services/api/UserApi";
 import FullScreenLoader from "../FullScreenLoader/FullScreenLoader";
 // import { userApi } from '../../redux/api/Userapi';
 
 const RequireUser = ({ children }) => {
+  const navigate = useNavigate();
   const { isFetching, isLoading } = useGetMeQuery();
   const [cookies] = useCookies(["logged_in"]);
   const location = useLocation();
-  const user = useSelector(getUser);
-  console.log(user);
+  console.log(location);
+  const user = useSelector(getUser)?.data;
 
-  // const { isLoading, isFetching } = userApi.endpoints.getMe.useQuery(null, {
-  //   skip: false,
-  //   refetchOnMountOrArgChange: true,
-  // });
+  if (isLoading || isFetching) {
+    // Loading state, show loader
+    return <FullScreenLoader />;
+  }
 
-  const loading = isLoading || isFetching;
-  return (
-    <>
-      {loading ? (
-        <FullScreenLoader />
-      ) : cookies.logged_in && user ? (
-        children
-      ) : (
-        <Navigate to="/login" state={{ from: location }} replace />
-      )}
-    </>
-  );
+  if (cookies.logged_in && user) {
+    // User is already logged in
+    return children;
+  } else return null;
 };
 
 export default RequireUser;

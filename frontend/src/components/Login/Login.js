@@ -24,18 +24,25 @@ import { useLoginUserMutation } from "../../services/api/AuthApi";
 import { LoginSchema } from "./schemas/loginSchema";
 import { useSelector } from "react-redux";
 import { getUser } from "../../features/user/UserSlice";
+// import { useGetMeQuery } from "../../services/api/UserApi";
+// import FullScreenLoader from "../FullScreenLoader/FullScreenLoader";
 const Login = () => {
+  // const location = useLocation();
+  // const { isFetching, isLoading: getmeLoading } = useGetMeQuery();
   const [show, setShow] = useState(false);
   const user = useSelector(getUser);
-  console.log(user);
   const navigate = useNavigate();
   const [login, { isSuccess, isLoading }] = useLoginUserMutation();
+
+  useEffect(() => {
+    if (user && user?.data[0]) navigate("/app", { from: "login" });
+  }, [user, navigate]);
 
   useEffect(() => {
     if (isSuccess) {
       navigate("/app");
     }
-  });
+  }, [isSuccess, navigate]);
 
   const handleClick = () => {
     setShow(!show);
@@ -62,6 +69,7 @@ const Login = () => {
 
   return (
     <>
+      {/* {getmeLoading || isFetching ? <FullScreenLoader /> : null} */}
       <div className="relative h-screen md:w-1/2 flex justify-center items-center w-full ">
         <Box
           w="100%"

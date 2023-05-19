@@ -21,6 +21,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 // import theme from "./theme";
 import Profile from "../src/components/Profile/Profile";
 import Dashboard from "../src/components/Dashboard/Dashboard";
+import Books from "./components/Books/Books";
 // import Editors from "./Editors";
 
 const router = createBrowserRouter(
@@ -47,6 +48,16 @@ const router = createBrowserRouter(
             </RequireUser>
           }
         />
+
+        <Route
+          path="books"
+          element={
+            <RequireUser>
+              <Books />
+            </RequireUser>
+          }
+        />
+
         <Route
           index
           element={
@@ -66,6 +77,7 @@ function App() {
   return (
     <ChakraProvider>
       <RouterProvider router={router} />
+      <div id="modal-root"></div>
       <ToastContainer
         position="top-right"
         autoClose={5000}

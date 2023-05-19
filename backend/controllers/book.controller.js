@@ -26,6 +26,7 @@ module.exports.createBookHandler = async (req, res, next) => {
     });
   } catch (err) {
     if (err.code === 11000) {
+      console.log(err);
       return res.status(409).json({
         status: "fail",
         message: "Book already exist, try to edit it.",
