@@ -127,6 +127,16 @@ const Topnav = () => {
                       Students
                     </a>
                   ) : null}
+
+                  {user.role === "admin" ? (
+                    <Link
+                      to="add-books"
+                      className="text-gray-300 hover:bg-[#B285FF] hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                    >
+                      Add Books
+                    </Link>
+                  ) : null}
+
                   <Link
                     to="books"
                     className="text-gray-300 hover:bg-[#B285FF] hover:text-white rounded-md px-3 py-2 text-sm font-medium"
@@ -251,7 +261,7 @@ const Topnav = () => {
               </a>
             ) : null}
             <Link
-              to="books"
+              to="add-books"
               className="text-gray-300 hover:bg-[#B285FF] hover:text-white block rounded-md px-3 py-2 text-base font-medium"
             >
               Books

@@ -11,15 +11,16 @@ export const bookApi = createApi({
     getBooks: builder.query({
       query() {
         return {
-          url: "books/all",
+          url: "book/all",
           credentials: "include",
         };
       },
       providesTags: ["Book"],
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled(args);
-          dispatch(setBooks(data));
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(setBooks(data?.data));
         } catch (error) {}
       },
     }),
@@ -91,8 +92,24 @@ export const bookApi = createApi({
       },
       invalidatesTags: ["Book"],
     }),
+
+    updateBook: builder.mutation({
+      query(payload) {
+        return {
+          url: "book/update",
+          method: "PUT",
+          credentials: "include",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["Book"],
+    }),
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation, useSearchBooksQuery } =
-  bookApi;
+export const {
+  useGetBooksQuery,
+  useAddBookMutation,
+  useSearchBooksQuery,
+  useUpdateBookMutation,
+} = bookApi;

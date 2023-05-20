@@ -1,5 +1,9 @@
 const AppError = require("../utils/appError");
-const { getAllBooks, createBook } = require("../services/book.service");
+const {
+  getAllBooks,
+  createBook,
+  updateBook,
+} = require("../services/book.service");
 
 module.exports.createBookHandler = async (req, res, next) => {
   try {
@@ -43,5 +47,28 @@ module.exports.getAllBookHandler = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(new AppError(error));
+  }
+};
+
+module.exports.updateBookHandler = async (req, res, next) => {
+  try {
+    const { isbn } = req.body;
+    const payload = req.body;
+
+    const updatedData = await updateBook(isbn, payload);
+
+    res.status(200).json({
+      message: "Book updated",
+      data: updatedData,
+    });
+  } catch (err) {
+    console.log(err);
+    if (err.code === 11000) {
+      return res.status(409).json({
+        status: "fail",
+        message: "Book already exists, try editing it.",
+      });
+    }
+    next(err);
   }
 };

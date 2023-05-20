@@ -22,6 +22,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Profile from "../src/components/Profile/Profile";
 import Dashboard from "../src/components/Dashboard/Dashboard";
 import Books from "./components/Books/Books";
+import LibraryBooks from "./components/LibraryBooks/LibraryBooks";
 // import Editors from "./Editors";
 
 const router = createBrowserRouter(
@@ -50,10 +51,19 @@ const router = createBrowserRouter(
         />
 
         <Route
-          path="books"
+          path="add-books"
           element={
             <RequireUser>
               <Books />
+            </RequireUser>
+          }
+        />
+
+        <Route
+          path="books"
+          element={
+            <RequireUser>
+              <LibraryBooks />
             </RequireUser>
           }
         />

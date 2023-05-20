@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAllBookHandler,
   createBookHandler,
+  updateBookHandler,
 } = require("../controllers/book.controller");
 const { deserializeUser } = require("../middleware/deserializeUser");
 const { requireUser } = require("../middleware/requireUser");
@@ -14,6 +15,7 @@ router.use(deserializeUser, requireUser);
 
 router.get("/all", getAllBookHandler);
 router.post("/add", validate(bookSchema), createBookHandler);
+router.put("/update", updateBookHandler);
 // router.delete("/remove/:id", removeBookHandler);
 
 module.exports = router;
