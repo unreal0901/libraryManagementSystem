@@ -1,0 +1,54 @@
+.
+├── app.js
+├── bin/
+├── config/
+│   ├── custom-environment-variables.json
+│   └── default.json
+├── controllers/
+│   ├── auth.controller.js
+│   ├── book.controller.js
+│   ├── student.controller.js
+│   └── user.controller.js
+├── directory_structure.txt
+├── docker-compose.yml
+├── middleware/
+│   ├── deserializeUser.js
+│   ├── requireUser.js
+│   ├── restrictTo.js
+│   └── validate.js
+├── models/
+│   ├── book.model.js
+│   ├── bookInventory.model.js
+│   └── student.model.js
+├── package.json
+├── package-lock.json
+├── public/
+│   ├── images/
+│   ├── javascripts/
+│   └── stylesheets/
+│       └── style.css
+├── routes/
+│   ├── auth.route.js
+│   ├── book.route.js
+│   ├── student.route.js
+│   └── user.route.js
+├── schema/
+│   ├── book.schema.js
+│   └── student.schema.js
+├── services/
+│   ├── auth.service.js
+│   ├── book.service.js
+│   ├── student.service.js
+│   └── user.service.js
+├── utils/
+│   ├── appError.js
+│   ├── connectDB.js
+│   ├── connectRedis.js
+│   ├── email.js
+│   ├── excludedFields.js
+│   └── jwt.js
+└── views/
+    ├── _styles.pug
+    ├── base.pug
+    └── password.pug
+
