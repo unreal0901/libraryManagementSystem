@@ -3,9 +3,12 @@ import Logo from "../../assets/Logo.png";
 import { useSelector } from "react-redux";
 import { getUser } from "../../features/user/UserSlice";
 import { Link, Outlet } from "react-router-dom";
+import ProfileImg from "../../assets/profilePic.png";
+import { useLogoutUserMutation } from "../../services/api/AuthApi";
 
 const Topnav = () => {
   const user = useSelector(getUser).data[0];
+  const [logout] = useLogoutUserMutation();
   console.log(user);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -20,6 +23,14 @@ const Topnav = () => {
 
   const closeProfileMenu = () => {
     setIsProfileOpen(false);
+  };
+
+  const signoutHandler = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -120,12 +131,12 @@ const Topnav = () => {
                     Dashboard
                   </a>
                   {user.role === "admin" ? (
-                    <a
-                      href="#!"
+                    <Link
+                      to="students"
                       className="text-gray-300 hover:bg-[#B285FF] hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                     >
                       Students
-                    </a>
+                    </Link>
                   ) : null}
 
                   {user.role === "admin" ? (
@@ -143,13 +154,13 @@ const Topnav = () => {
                   >
                     Books
                   </Link>
-                  {user.role === "user" ? (
-                    <a
-                      href="#!"
+                  {user.role === "admin" ? (
+                    <Link
+                      to="issuedBooks"
                       className="text-gray-300 hover:bg-[#B285FF] hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                     >
                       Issued Books
-                    </a>
+                    </Link>
                   ) : null}
                 </div>
               </div>
@@ -169,7 +180,7 @@ const Topnav = () => {
                 <div>
                   <button
                     type="button"
-                    className="flex rounded-full border-2 bg-[#B285FF] text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="flex rounded-full border-2 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     id="user-menu-button"
                     aria-expanded={isProfileOpen ? "true" : "false"}
                     aria-haspopup="true"
@@ -178,7 +189,9 @@ const Topnav = () => {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="h-8 w-8 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src={
+                        user.photo !== "default.png" ? user.photo : ProfileImg
+                      }
                       alt=""
                     />
                   </button>
@@ -222,11 +235,12 @@ const Topnav = () => {
                       Settings
                     </a>
                     <a
-                      href="#!"
+                      href="/login"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-2"
+                      onClick={signoutHandler}
                     >
                       Sign out
                     </a>
@@ -245,20 +259,20 @@ const Topnav = () => {
         >
           <div className="space-y-1 px-2 pb-3 pt-2 absolute bg-[#805AD5]  w-full">
             {/* Current: "bg-[#B285FF] text-white", Default: "text-gray-300 hover:bg-[#B285FF] hover:text-white" */}
-            <a
-              href="#!"
+            <Link
+              to="dashboard"
               className="bg-[#B285FF] text-white block rounded-md px-3 py-2 text-base font-medium"
               aria-current="page"
             >
               Dashboard
-            </a>
+            </Link>
             {user.role === "admin" ? (
-              <a
-                href="#!"
+              <Link
+                to="students"
                 className="text-gray-300 hover:bg-[#B285FF] hover:text-white block rounded-md px-3 py-2 text-base font-medium"
               >
                 Students
-              </a>
+              </Link>
             ) : null}
             <Link
               to="add-books"
@@ -267,12 +281,12 @@ const Topnav = () => {
               Books
             </Link>
             {user.role === "user" ? (
-              <a
-                href="#!"
+              <Link
+                to="issuedBooks"
                 className="text-gray-300 hover:bg-[#B285FF] hover:text-white block rounded-md px-3 py-2 text-base font-medium"
               >
                 Issued Books
-              </a>
+              </Link>
             ) : null}
           </div>
         </div>

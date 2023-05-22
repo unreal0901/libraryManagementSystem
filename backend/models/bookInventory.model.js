@@ -13,16 +13,12 @@ const bookInventorySchema = new mongoose.Schema(
       required: [true, "The number of books available must be provided"],
       min: 0,
     },
-    users: {
-      type: [
-        {
-          type: String,
-          unique: true,
-          sparse: true,
-        },
-      ],
-      default: undefined,
-    },
+    users: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

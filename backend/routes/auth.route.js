@@ -2,6 +2,7 @@ const express = require("express");
 const {
   loginHandler,
   registerHandler,
+  logoutHandler,
 } = require("../controllers/auth.contoller");
 const { deserializeUser } = require("../middleware/deserializeUser");
 const { requireUser } = require("../middleware/requireUser");
@@ -27,6 +28,6 @@ router.use(deserializeUser, requireUser);
 router.post("/register", validate(createStudentSchema), registerHandler);
 
 // Logout User
-// router.get("/logout", logoutHandler);
+router.get("/logout", logoutHandler);
 
 module.exports = router;

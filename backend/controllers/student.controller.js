@@ -3,6 +3,7 @@ const {
   findBook,
   issueBook,
   returnBook,
+  getStudentBooks,
 } = require("../services/student.service");
 const AppError = require("../utils/appError");
 
@@ -16,15 +17,15 @@ module.exports.issueHandler = async (req, res, next) => {
     const bookInventory = await BookInventory.findOne({ isbn: book.isbn });
 
     if (!bookInventory || bookInventory.numBooksAvailable === 0) {
-      return res.status(404).json({ message: "No available books to issue." });
+      throw new AppError("No available book to issue", 404);
     }
-
     await issueBook(user, book);
     res.status(201).json({
       message: `Book ${book.title} issued by ${user.fullName}`,
     });
   } catch (error) {
-    next(error);
+    console.log(error);
+    return next(error);
   }
 };
 
@@ -40,6 +41,21 @@ module.exports.returnHandler = async (req, res, next) => {
         message: `Book Returned by ${user.fullName}`,
       });
   } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+module.exports.getStudentBooksHandler = async (req, res, next) => {
+  try {
+    const user = res.locals.user;
+    const studentBooks = await getStudentBooks(user);
+    console.log(studentBooks);
+    res
+      .status(200)
+      .json({ message: "All Student Books fetched", data: studentBooks });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };

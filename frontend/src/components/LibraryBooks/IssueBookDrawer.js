@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   DrawerOverlay,
@@ -15,13 +15,41 @@ import {
   DrawerCloseButton,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
+import { useIssueBookMutation } from "../../services/api/BookApi";
+import { toast } from "react-toastify";
+import { useGetAllStudentsQuery } from "../../services/api/UserApi";
 
-const IssueBookDrawer = ({ isOpen, onClose, book }) => {
+const IssueBookDrawer = ({ isOpen, onClose, book, setIsIssueDrawerOpen }) => {
   const MAX_DESCRIPTION_LENGTH = 150; // Maximum length of the description
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [issueBook, { isSuccess, error }] = useIssueBookMutation();
+  const { refetch: refetchStudents } = useGetAllStudentsQuery();
+
+  useEffect(() => {
+    if (isSuccess) {
+      refetchStudents();
+      toast.success("Book Issued");
+      setIsIssueDrawerOpen(false);
+    }
+  }, [isSuccess, refetchStudents, setIsIssueDrawerOpen]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(`Error : ${error}`);
+      setIsIssueDrawerOpen(false);
+    }
+  }, [error, setIsIssueDrawerOpen]);
 
   const handleToggleDescription = () => {
     setShowFullDescription(!showFullDescription);
+  };
+
+  const issuedBookHandler = async () => {
+    try {
+      await issueBook(book._id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const formattedDate = book.publishedDate
@@ -109,6 +137,7 @@ const IssueBookDrawer = ({ isOpen, onClose, book }) => {
               mt={10}
               justifySelf="center"
               alignSelf="center"
+              onClick={issuedBookHandler}
             >
               Issue Book
             </Button>

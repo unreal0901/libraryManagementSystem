@@ -36,18 +36,20 @@ const findAndUpdateUser = async (query, update, options) => {
 
 // Sign Token
 const signToken = async (user) => {
+  console.log("Inside sign token");
+  console.log(user);
   // Sign the access token
-  const access_token = signJwt({ sub: user.id }, "accessTokenPrivateKey", {
+  const access_token = signJwt({ sub: user._id }, "accessTokenPrivateKey", {
     expiresIn: `${config.get("accessTokenExpiresIn")}m`,
   });
   // Sign the refresh token
-  const refresh_token = signJwt({ sub: user.id }, "refreshTokenPrivateKey", {
+  const refresh_token = signJwt({ sub: user._id }, "refreshTokenPrivateKey", {
     expiresIn: `${config.get("refreshTokenExpiresIn")}m`,
   });
 
   console.log(access_token, refresh_token);
   // Create a Session
-  redisClient.set(user.id, JSON.stringify(user), {
+  redisClient.set(user._id.toString(), JSON.stringify(user), {
     EX: 60 * 60,
   });
 

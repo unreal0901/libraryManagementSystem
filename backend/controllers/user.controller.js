@@ -15,6 +15,7 @@ const getMeHandler = async (req, res, next) => {
 const getAllUsersHandler = async (req, res, next) => {
   try {
     const users = await getAllUsers();
+    console.log(users);
     res.status(200).json({
       message: "All users",
       data: users,

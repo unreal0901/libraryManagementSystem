@@ -9,11 +9,11 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: customFetchBase,
   endpoints: (builder) => ({
-    registerUser: builder.mutation({
-      query(data) {
-        return { url: "auth/register", method: "POST", body: data };
-      },
-    }),
+    // registerUser: builder.mutation({
+    //   query(data) {
+    //     return { url: "auth/register", method: "POST", body: data };
+    //   },
+    // }),
     loginUser: builder.mutation({
       query(data) {
         return {
@@ -47,9 +47,4 @@ export const authApi = createApi({
   }),
 });
 
-export const {
-  useLoginUserMutation,
-  useRegisterUserMutation,
-  useLogoutUserMutation,
-  useVerifyEmailMutation,
-} = authApi;
+export const { useLoginUserMutation, useLogoutUserMutation } = authApi;

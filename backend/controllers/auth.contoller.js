@@ -68,6 +68,7 @@ module.exports.registerHandler = async (req, res, next) => {
       });
     }
   } catch (err) {
+    console.log(err);
     if (err.code === 11000) {
       return res.status(409).json({
         status: "fail",
@@ -106,6 +107,25 @@ module.exports.loginHandler = async (req, res, next) => {
       access_token,
     });
   } catch (err) {
+    next(err);
+  }
+};
+
+const logout = (res) => {
+  res.cookie("access_token", "", { maxAge: 1 });
+  res.cookie("refresh_token", "", { maxAge: 1 });
+  res.cookie("logged_in", "", { maxAge: 1 });
+};
+
+module.exports.logoutHandler = async (req, res, next) => {
+  try {
+    const user = res.locals.user;
+    console.log(user);
+    await redisClient.del(user._id.toString());
+    logout(res);
+    res.status(200).json({ status: "success" });
+  } catch (err) {
+    console.log(err);
     next(err);
   }
 };

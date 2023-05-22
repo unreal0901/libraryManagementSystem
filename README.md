@@ -1,10 +1,11 @@
-﻿# Library Management System
+﻿# Library management System
 
+This is library management system made in MERN stack.
 It's a basic library management system which is being developed , and is at early stage of development.
 
 # Flow
 
-- It has 2 users for now , student and admin, admin will have all privileges such as adding student , removing student , adding books , removing books and all.
+- It has 2 actors for now , student and admin, admin will have all privileges such as adding student , removing student , adding books , removing books and all.
 - Student will not be able to register themselves manually, admin will add/register student by proving an official email and student details and on that email auto generated password is sent and that password is also hashed and saved in database.
 - Student can login into their account by sent password and will be able to access all the functionality a user of type student have , like issuing books but not adding books.
 
@@ -17,3 +18,131 @@ It's a basic library management system which is being developed , and is at earl
 - Whenever someone try to access the protected routes then they have to send the accesstoken in header(Bearer format) or they have to send it inside cookie by credentials:true property.
 - If client have valid access token then we can verify it with public key and get the payload and payload have user.Id as sub so we can use it to get our session from redis too.
 - If client have valid access token and session then only he will be allowed to access the protected route else not.
+
+## API Reference
+
+There are 4 core/base routes:
+
+- Authentication route:
+
+```http
+/api/auth
+```
+
+- Users route:
+
+```http
+/api/users
+```
+
+- Book route:
+
+```http
+/api/book
+```
+
+- Student route:
+
+```http
+/api/student
+```
+
+---
+
+- SUB ROUTES FOR /auth :-
+
+```http
+POST /login
+
+---------------
+Registration can only be done by admin
+
+POST /register
+POST /logout
+```
+
+- SUB ROUTES FOR /book :-
+
+```http
+GET /all
+POST /add
+PUT /update
+```
+
+- SUB ROUTES FOR /student :-
+
+```http
+GET /mybooks
+POST /issue/:bookId
+POST /return/:bookId
+```
+
+- SUB ROUTES FOR /user :-
+
+```http
+GET /
+GET /me
+```
+
+| Parameter      | Type     | Description                                        |
+| :------------- | :------- | :------------------------------------------------- |
+| `accessToken`  | `cookie` | **Required**. Required for all routes except login |
+| `refreshToken` | `cookie` | **Required**. Required to refresh the access token |
+
+- A sesion is maintained in redis DB in backend , using token deserialization of user takes place and session is also checked during process.
+
+- Session is maintained using the id of the user and that id is also used as payload in jwt during signing.
+
+- So jwt carries the user id when we go to any protected route and so user session is checked by id stored in jwt.
+
+--> That is why access tokens should be sent with every subsequent requests after login, they can be sent as:
+
+- authorization header with bearer format
+- cookies (prefered just set credential include when sending request from frontend)
+
+--> When user log in automatically 3 cookies are set
+
+- logged_in: boolean for frontend
+- accessToken
+- refreshToken
+  All three of them are httpOnly cookies
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/unreal0901/libraryManagementSystem
+```
+
+For running the project locally,
+first clone the project using git clone
+
+- Project has 2 sections
+
+1. frontend directory
+2. backend directory
+
+requirement:
+
+- docker should be installed already
+
+Go to the project directory
+
+```bash
+   cd backend
+ npm i
+ docker-compose up -d
+ npm run start
+
+cd ..
+cd frontend
+npm i
+npm run start
+```
+
+With this both backend and frontend will be running locally in development environment.
+
+## Screenshots
+
+![App Screenshot](https://drive.google.com/file/d/1is6ban4yh8KkdI55-M0ULHBvnitutIry/view?usp=sharing)

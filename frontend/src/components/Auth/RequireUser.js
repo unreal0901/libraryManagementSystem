@@ -7,11 +7,8 @@ import FullScreenLoader from "../FullScreenLoader/FullScreenLoader";
 // import { userApi } from '../../redux/api/Userapi';
 
 const RequireUser = ({ children }) => {
-  const navigate = useNavigate();
   const { isFetching, isLoading } = useGetMeQuery();
   const [cookies] = useCookies(["logged_in"]);
-  const location = useLocation();
-  console.log(location);
   const user = useSelector(getUser)?.data;
 
   if (isLoading || isFetching) {

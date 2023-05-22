@@ -23,6 +23,9 @@ import Profile from "../src/components/Profile/Profile";
 import Dashboard from "../src/components/Dashboard/Dashboard";
 import Books from "./components/Books/Books";
 import LibraryBooks from "./components/LibraryBooks/LibraryBooks";
+import Students from "./components/Student/Students";
+import RoleBased from "./components/Auth/RoleBased";
+import IssuedBooks from "./components/Books/IssuedBooks/IssuedBooks";
 // import Editors from "./Editors";
 
 const router = createBrowserRouter(
@@ -64,6 +67,28 @@ const router = createBrowserRouter(
           element={
             <RequireUser>
               <LibraryBooks />
+            </RequireUser>
+          }
+        />
+
+        <Route
+          path="students"
+          element={
+            <RequireUser>
+              <RoleBased role="admin">
+                <Students />
+              </RoleBased>
+            </RequireUser>
+          }
+        />
+
+        <Route
+          path="issuedBooks"
+          element={
+            <RequireUser>
+              <RoleBased role="admin">
+                <IssuedBooks />
+              </RoleBased>
             </RequireUser>
           }
         />

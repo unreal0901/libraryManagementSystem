@@ -5,6 +5,7 @@ const { requireUser } = require("../middleware/requireUser");
 const {
   issueHandler,
   returnHandler,
+  getStudentBooksHandler,
 } = require("../controllers/student.controller");
 
 const router = express.Router();
@@ -14,5 +15,5 @@ router.use(deserializeUser, requireUser);
 
 router.post("/issue/:bookId", issueHandler);
 router.post("/return/:bookId", returnHandler);
-
+router.get("/mybooks", getStudentBooksHandler);
 module.exports = router;

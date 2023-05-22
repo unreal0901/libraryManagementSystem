@@ -2,20 +2,26 @@ const Book = require("../models/book.model");
 const BookInventory = require("../models/bookInventory.model");
 
 const createBook = async (input, numBooks) => {
-  let inventory = await BookInventory.findOne({
-    where: { isbn: input.isbn },
-  });
+  try {
+    let inventory = await BookInventory.findOne({ isbn: input.isbn });
 
-  if (inventory) {
-    inventory.numBooksAvailable += numBooks;
-    await inventory.save();
-  } else {
-    await BookInventory.create({
-      isbn: input.isbn,
-      numBooksAvailable: numBooks,
-    });
+    if (inventory) {
+      inventory.numBooksAvailable += numBooks;
+      await inventory.save();
+    } else {
+      inventory = new BookInventory({
+        isbn: input.isbn,
+        numBooksAvailable: numBooks,
+      });
+      await inventory.save();
+    }
+
+    return Book.create(input);
+  } catch (error) {
+    // Handle the error here
+    console.error(error, "Error occured during create Book");
+    throw error;
   }
-  return Book.create(input);
 };
 
 const findBook = async (query, options = {}) => {
