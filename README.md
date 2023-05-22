@@ -1,4 +1,5 @@
-﻿# Library management System
+﻿
+# Library management System
 
 This is library management system made in MERN stack.
 It's a basic library management system which is being developed , and is at early stage of development.
@@ -19,38 +20,30 @@ It's a basic library management system which is being developed , and is at earl
 - If client have valid access token then we can verify it with public key and get the payload and payload have user.Id as sub so we can use it to get our session from redis too.
 - If client have valid access token and session then only he will be allowed to access the protected route else not.
 
-## API Reference
 
+
+## API Reference
 There are 4 core/base routes:
 
 - Authentication route:
-
 ```http
 /api/auth
 ```
-
 - Users route:
-
 ```http
 /api/users
 ```
-
 - Book route:
-
 ```http
 /api/book
 ```
-
 - Student route:
-
 ```http
 /api/student
 ```
-
----
+----------------
 
 - SUB ROUTES FOR /auth :-
-
 ```http
 POST /login
 
@@ -77,17 +70,17 @@ POST /issue/:bookId
 POST /return/:bookId
 ```
 
-- SUB ROUTES FOR /user :-
 
+- SUB ROUTES FOR /user :-
 ```http
 GET /
 GET /me
 ```
 
-| Parameter      | Type     | Description                                        |
-| :------------- | :------- | :------------------------------------------------- |
-| `accessToken`  | `cookie` | **Required**. Required for all routes except login |
-| `refreshToken` | `cookie` | **Required**. Required to refresh the access token |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `accessToken`      | `cookie` | **Required**. Required for all routes except login |
+| `refreshToken`      | `cookie` | **Required**. Required to refresh the access token |
 
 - A sesion is maintained in redis DB in backend , using token deserialization of user takes place and session is also checked during process.
 
@@ -96,16 +89,16 @@ GET /me
 - So jwt carries the user id when we go to any protected route and so user session is checked by id stored in jwt.
 
 --> That is why access tokens should be sent with every subsequent requests after login, they can be sent as:
-
 - authorization header with bearer format
 - cookies (prefered just set credential include when sending request from frontend)
 
 --> When user log in automatically 3 cookies are set
-
 - logged_in: boolean for frontend
 - accessToken
 - refreshToken
-  All three of them are httpOnly cookies
+All three of them are httpOnly cookies
+
+
 
 ## Run Locally
 
@@ -119,12 +112,10 @@ For running the project locally,
 first clone the project using git clone
 
 - Project has 2 sections
-
 1. frontend directory
 2. backend directory
 
 requirement:
-
 - docker should be installed already
 
 Go to the project directory
@@ -143,6 +134,10 @@ npm run start
 
 With this both backend and frontend will be running locally in development environment.
 
+
+
+
 ## Screenshots
 
 ![App Screenshot](https://drive.google.com/file/d/1is6ban4yh8KkdI55-M0ULHBvnitutIry/view?usp=sharing)
+
