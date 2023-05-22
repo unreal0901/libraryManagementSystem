@@ -4,8 +4,9 @@
 
 # Library management System
 
-This is library management system made in MERN stack.
-It's a basic library management system which is being developed , and is at early stage of development.
+- This is library management system made in MERN stack.
+- It's a basic library management system which is being developed , and is at early stage of development.
+- I have intgrated the googlePlay books api so that admins can directly enter the book from playBooks if available there.
 
 # Flow
 
@@ -146,3 +147,39 @@ npm run start
 ```
 
 With this both backend and frontend will be running locally in development environment.
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+### Frontend:
+
+- `REACT_APP_BASE_URL`="http://localhost:8000"
+- `REACT_APP_GOOGLE_BOOKS_KEY`="(Your google play books api)"
+
+### Backend:
+
+- `NODE_ENV=development`
+- `MONGODB_USERNAME=(any username for mongodb)`
+- `MONGODB_PASSWORD=(any pass)`
+- `MONGODB_DATABASE_NAME=(Enter any database name)`
+
+- `ACCESS_TOKEN_PRIVATE_KEY`=
+- `ACCESS_TOKEN_PUBLIC_KEY`=
+- `REFRESH_TOKEN_PRIVATE_KEY`=
+- `REFRESH_TOKEN_PUBLIC_KEY`=
+
+- (Generate the keys from "https://travistidwell.com/jsencrypt/demo/")
+- (Convert them to base64 encoding first then paste here: to convert use:"https://www.base64encode.org/")
+
+<!-- These are smtp settings for nodemailer -->
+
+- `EMAIL_USER=(Your email which you will use to send mail to others)`
+- `EMAIL_PASS=(Email pass)`
+- `EMAIL_HOST=(host of email) || smtp.ethereal.email`
+- `EMAIL_PORT=(Email port)`
+
+- For using nodemailer with gmail, read this article:
+
+1. "https://miracleio.me/snippets/use-gmail-with-nodemailer/"
+2. "https://mailtrap.io/blog/nodemailer-gmail/"
