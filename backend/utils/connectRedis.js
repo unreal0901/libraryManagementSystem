@@ -1,7 +1,15 @@
 const { createClient } = require("redis");
-const redisUrl = `redis://localhost:6379`;
+const config = require("config");
+const redisUrl = `redis://${config.get("redisName")}:${config.get(
+  "redisPass"
+)}@redis-17596.c15.us-east-1-2.ec2.cloud.redislabs.com:17596`;
+
 const redisClient = createClient({
-  url: redisUrl,
+  password: config.get("redisPass"),
+  socket: {
+    host: "redis-11630.c321.us-east-1-2.ec2.cloud.redislabs.com",
+    port: 11630,
+  },
 });
 
 const connectRedis = async () => {

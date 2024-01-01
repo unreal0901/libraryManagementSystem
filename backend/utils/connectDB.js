@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const config = require("config");
 
-const dbUrl = `mongodb://${config.get("dbName")}:${config.get(
+// mongodb+srv://<username>:<password>@cluster0.ssslp.mongodb.net/?retryWrites=true&w=majority
+
+const dbUrl = `mongodb+srv://${config.get("dbName")}:${config.get(
   "dbPass"
-)}@localhost:6000/${config.get("databaseName")}?authSource=admin`;
+)}@cluster0.ssslp.mongodb.net/${config.get(
+  "databaseName"
+)}?retryWrites=true&w=majority`;
 
 const connectDB = async () => {
   try {
